@@ -29,7 +29,7 @@ function Contacts({ contacts, currentUser, handleChatChange }) {
           <div style={{ display: 'grid', gridTemplateRows: '10% 75% 15%', overflow: 'hidden', backgroundColor: '#080420' }} className=''>
             <div className='flex justify-center items-center gap-4 '>
               <img className='h-8' src={Logo} alt="" />
-              <h3 className='text-white uppercase'>Chatty</h3>
+              <h3 className='text-white uppercase'>Buzz</h3>
             </div>
 
             <div className="scrollbar flex flex-col items-center overflow-auto gap-3">

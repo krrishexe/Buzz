@@ -91,7 +91,7 @@ function Login() {
 
           <div className=" rounded-lg brand flex items-center gap-4 justify-center">
             <img className='h-10' src={logo} alt="" />
-            <h1 className='text-white uppercase'>Chatty</h1>
+            <h1 className='text-white uppercase'>Buzz</h1>
           </div>
 
           <input className='bg-transparent p-2 border-2 rounded-md border-blue-400 text-white w-full text-base focus:border-purple-400 focus:outline-none' name='username' type="text" placeholder='username' value={values.username} onBlur={handleBlur} onChange={handleChange} min={3} />
