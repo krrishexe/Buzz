@@ -1,0 +1,76 @@
+const User = require('../models/User.Model')
+const bcrypt = require('bcrypt')
+
+
+module.exports.register = async (req, res, next) => {
+    try {
+        const { username, password, email } = req.body;
+        if (username === '' || email === '' || password === '') {
+            return res.json({ msg: "Username, Password or Email are required fields", status: false })
+        }
+        const usernameCheck = await User.findOne({ username })
+        if (usernameCheck) {
+            return res.json({ msg: "Username already exists!", status: false })
+        }
+        const emailCheck = await User.findOne({ email })
+        if (emailCheck) {
+            return res.json({ msg: "Email already exists!", status: false })
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 8)
+        const user = await User.create({ email, username, password: hashedPassword });
+        delete user.password
+        return res.json({ status: true, user: user, msg: "Account created successfully" })
+    } catch (ex) {
+        next(ex)
+    }
+};
+
+
+module.exports.login = async (req, res, next) => {
+    try {
+        const { username, password } = req.body;
+        const user = await User.findOne({ username })
+        if (!user) {
+            return res.json({ msg: "Incorrect Username or Password", status: false })
+        }
+        const isPasswordValid = await bcrypt.compare(password, user.password)
+        if (!isPasswordValid) {
+            return res.json({ msg: "Incorrect Username or Password", status: false })
+        }
+        delete user.password;
+        return res.json({ status: true, user })
+    } catch (ex) {
+        next(ex)
+    }
+};
+
+module.exports.SetAvatar = async (req, res, next) => {
+    try {
+        console.log(req.params)
+        const userId = req.params.id;
+        const avatarImage = req.body.image;
+        const userData = await User.findByIdAndUpdate(userId, {
+            isAvatarImageSet: true,
+            avatarImage
+        })
+        return res.json({ isSet: userData.isAvatarImageSet, image: userData.avatarImage })
+    } catch (ex) {
+        next(ex)
+    }
+};
+
+module.exports.getAllUsers = async (req, res, next) => {
+    try {
+        // $ne means all users except the current one
+        const users = await User.find({ _id: { $ne: req.params.id } }).select([
+            "email",
+            "_id",
+            "avatarImage",
+            "username"
+        ])
+        return res.json(users)
+    } catch (ex) {
+        next(ex)
+    }
+};
