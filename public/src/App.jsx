@@ -4,6 +4,7 @@ import Register  from './pages/Register'
 import Login  from './pages/Login'
 import Chat  from './pages/Chat'
 import SetAvatar from './components/SetAvatar'
+import Video from './pages/Video'
 
 
 
@@ -15,6 +16,7 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
         <Route path='/' element={<Chat />} />
+        <Route path='/video' element={<Video />} />
         <Route path='/SetAvatar' element={<SetAvatar />} />
       </Routes>
     </BrowserRouter>

@@ -5,6 +5,7 @@ const app = express()
 const userRoutes = require('./routes/userRoutes')
 const messageRoutes = require('./routes/messagesRoute')
 const { connectDB } = require('./db')
+const {Server} = require('socket.io')
 const socket = require('socket.io')
 require('dotenv').config()
 
@@ -37,6 +38,7 @@ const io = socket(server, {
 });
 
 global.onlineUsers = new Map();
+
 io.on("connection", (socket) => {
     global.chatSocket = socket;
     socket.on("add-user", (userId) => {
@@ -50,4 +52,8 @@ io.on("connection", (socket) => {
         }
     });
 });
+
+//Video Callng chat application code here.
+io.listen(8001)
+
 // FLOW --> INDEX --> ROUTES --> CONTROLLERS --> MODELS.

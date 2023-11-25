@@ -1,86 +1,52 @@
-import { Link, useNavigate } from 'react-router-dom'
-import logo from '../assets/logo.svg'
-import { useEffect, useState } from 'react'
-import { toast, ToastContainer } from 'react-toastify'
-import "react-toastify/dist/ReactToastify.css";
+import React from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import logo from "../assets/logo.svg"
+import { videoSchema } from "../models/index"
 import { useFormik } from 'formik'
-import { loginSchema } from '../models';
-import axios from 'axios'
-import { loginRoute } from '../utils/APIRoutes';
+import { toast, ToastContainer } from 'react-toastify'
 
-function Login() {
 
-  const navigate = useNavigate()
+
+function Video() {
+
+  const navigate = useNavigate();
 
   const initialValues = {
     username: '',
-    password: '',
+    videoId: '',
   }
 
-  const { values, errors, touched, handleChange, handleSubmit, handleBlur } = useFormik({
-    initialValues: initialValues,
-    validationSchema: loginSchema,
+  const { errors, values, handleBlur, touched, handleChange, handleSubmit } = useFormik({
+    initialValues,
+    validationSchema: videoSchema,
     onSubmit: (values, action) => {
       console.log(values)
       action.resetForm()
     }
   })
 
-  useEffect(() => {
-    if (localStorage.getItem('chat-app-user')) {
-      navigate('/')
-    }
-  })
+  const handleOnClick = () => {
 
-  const handleOnClick = async (e) => {
-    // e.preventDefault()
-
-    errors.username && touched.username ? (toast.error(errors.username, {
-      position: 'bottom-right',
-      autoClose: 3000,
-      pauseOnHover: true,
-      draggable: true,
-      theme: 'dark'
-    })) : null;
-
-    errors.password && touched.password ? (toast.error(errors.password, {
-      position: 'bottom-right',
-      autoClose: 3000,
-      pauseOnHover: true,
-      draggable: true,
-      theme: 'dark'
-    })) : null;
-
-    const { username, password } = values;
-    const { data } = await axios.post(loginRoute, {
-      username,
-      password
-    })
-
-    // console.log(data)
-
-    if (data.status === false) {
-      console.log("false")
-      toast.error(data.msg, {
+    errors.username && touched.username ? (
+      toast.error(errors.username, {
         position: 'bottom-right',
         autoClose: 3000,
         pauseOnHover: true,
         draggable: true,
         theme: 'dark'
       })
-    }
-    if (data.status === true) {
-      console.log("true")
-      localStorage.setItem('chat-app-user', JSON.stringify(data.user))
-      toast.success(data.msg, {
+    ) : null
+
+    errors.videoId && touched.videoId ? (
+      toast.error(errors.videoId, {
         position: 'bottom-right',
         autoClose: 3000,
         pauseOnHover: true,
         draggable: true,
         theme: 'dark'
       })
-      navigate('/')
-    }
+    ) : null
+
   }
 
   return (
@@ -96,7 +62,7 @@ function Login() {
           <input className='bg-transparent p-2 border-2 rounded-md border-blue-400 text-white w-full text-base focus:border-purple-400 focus:outline-none' name='username' type="text" placeholder='username' value={values.username} onBlur={handleBlur} onChange={handleChange} min={3} />
 
 
-          <input className='bg-transparent p-2 border-2 rounded-md border-blue-400 text-white w-full text-base focus:border-purple-400 focus:outline-none' name='password' type="password" placeholder='Enter password' onBlur={handleBlur} value={values.password} onChange={handleChange} />
+          <input className='bg-transparent p-2 border-2 rounded-md border-blue-400 text-white w-full text-base focus:border-purple-400 focus:outline-none' name='password' type="password" placeholder='Enter videoId' onBlur={handleBlur} value={values.password} onChange={handleChange} />
 
           <div className="button-container">
             <div className="dog">
@@ -123,7 +89,7 @@ function Login() {
               </div>
             </div>
 
-            <button className='text-white w-full bg-violet-500 px-8 py-4 border-none font-bold text-lg cursor-pointer rounded-sm uppercase hover:bg-violet-400 transition-colors duration-200' type='submit' onClick={handleOnClick}>Login</button>
+            <button className='text-white w-full bg-violet-500 px-8 py-4 border-none font-bold text-lg cursor-pointer rounded-sm uppercase hover:bg-violet-400 transition-colors duration-200' type='submit' onClick={handleOnClick}>Join Videochat</button>
 
             <div className="paw"></div>
             <div className="paw top"></div>
@@ -137,4 +103,4 @@ function Login() {
   )
 }
 
-export default Login
+export default Video
