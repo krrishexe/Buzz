@@ -59,6 +59,7 @@ const userToSocketMapping = new Map();
 
 io.on("connection",(socket)=>{
     socket.on("join-video",(data) => {
+        console.log("new connection")
         const {username,videoId} = data;
         console.log("user", username, "joined" , videoId);
         const socketId = socket.id;
@@ -68,7 +69,7 @@ io.on("connection",(socket)=>{
     });
 });
 
-io.listen(8001)
+io.listen(5001)
 
 
 // FLOW --> INDEX --> ROUTES --> CONTROLLERS --> MODELS.
