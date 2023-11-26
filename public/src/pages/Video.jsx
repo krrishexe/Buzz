@@ -95,7 +95,7 @@ function Video() {
             <div className="paw top"></div>
           </div>
 
-          <span className='text-white uppercase'>Already have an account ? <Link className='text-violet-700 no-underline font-bold' to="/register">Register</Link> </span>
+          <span className='text-white uppercase'>Dont have an account ? <Link className='text-violet-700 no-underline font-bold' to="/register">Register</Link> </span>
         </form>
       </div>
       <ToastContainer />

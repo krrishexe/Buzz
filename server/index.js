@@ -37,7 +37,7 @@ const io = socket(server, {
     },
 });
 
-global.onlineUsers = new Map();
+global.onlineUsers = new Map(); //kis room me kaun baitha hai .
 
 io.on("connection", (socket) => {
     global.chatSocket = socket;
@@ -54,6 +54,21 @@ io.on("connection", (socket) => {
 });
 
 //Video Callng chat application code here.
+
+const userToSocketMapping = new Map();
+
+io.on("connection",(socket)=>{
+    socket.on("join-video",(data) => {
+        const {username,videoId} = data;
+        console.log("user", username, "joined" , videoId);
+        const socketId = socket.id;
+        userToSocketMapping.set(username,socketId);
+        socket.join(videoId);
+        socket.broadcast.to(videoId).emit("user-joined",{username});
+    });
+});
+
 io.listen(8001)
+
 
 // FLOW --> INDEX --> ROUTES --> CONTROLLERS --> MODELS.

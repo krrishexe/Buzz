@@ -129,7 +129,40 @@ function Login() {
             <div className="paw top"></div>
           </div>
 
-          <span className='text-white uppercase'>Already have an account ? <Link className='text-violet-700 no-underline font-bold' to="/register">Register</Link> </span>
+          <p className='text-white text-lg mx-auto -my-5'>OR</p>
+
+          <div className="button-container">
+            <div className="dog">
+              <div className="tail"></div>
+              <div className="body"></div>
+              <div className="head">
+                <div className="eyes">
+                  <div className="left"></div>
+                  <div className="right"></div>
+                </div>
+                <div className="nuzzle">
+                  <div className="mouth">
+                    <div className="tongue"></div>
+                  </div>
+                  <div className="nose">
+                    <div className="nostrils"></div>
+                    <div className="highlight"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="ears">
+                <div className="left"></div>
+                <div className="right"></div>
+              </div>
+            </div>
+
+            <button className='text-white w-full bg-violet-500 px-8 py-4 border-none font-bold text-lg cursor-pointer rounded-sm uppercase hover:bg-violet-400 transition-colors duration-200' type='submit' ><Link to="/video">Join Videochat</Link></button>
+
+            <div className="paw"></div>
+            <div className="paw top"></div>
+          </div>
+
+          <span className='text-white uppercase'>Dont have an account ? <Link className='text-violet-700 no-underline font-bold' to="/register">Register</Link> </span>
         </form>
       </div>
       <ToastContainer />
