@@ -74,6 +74,15 @@ io.on("connection",(socket)=>{
         socket.join(videoId);
         io.to(socketId).emit("join-video",data)
     });
+
+    socket.on('user-call',({to,offer})=>{
+        io.to(to).emit('incoming-user-call',{from:socket.id,offer})
+    })
+
+    socket.on('call-accepted',({to,ans})=>{
+        io.to(to).emit('call-accepted',{from:socket.id,ans})
+
+    })
 });
 
 io.listen(5001)
