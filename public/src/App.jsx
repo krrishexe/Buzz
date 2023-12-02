@@ -5,23 +5,24 @@ import Login from './pages/Login'
 import Chat from './pages/Chat'
 import SetAvatar from './components/SetAvatar'
 import Video from './pages/Video'
-import socketContextProvider from './providers/SocketContextProvider'
-
+import {SocketContextProvider} from "./providers/SocketContextProvider"
+import Room from './components/Room'
 
 function App() {
 
   return (
-    <socketContextProvider>
+    <SocketContextProvider>
       <BrowserRouter>
         <Routes>
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
           <Route path='/' element={<Chat />} />
           <Route path='/video' element={<Video />} />
+          <Route path='/video/:videoId' element={<Room />} />
           <Route path='/SetAvatar' element={<SetAvatar />} />
         </Routes>
       </BrowserRouter>
-    </socketContextProvider>
+    </SocketContextProvider>
   )
 }
 

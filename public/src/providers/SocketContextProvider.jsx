@@ -1,25 +1,25 @@
-import { React, useContext, useMemo, useState } from 'react';
+import { React, useContext, useMemo, createContext } from 'react';
 import { io } from "socket.io-client"
-import socketContext from './SocketContextProvider';
 
-const socketContextProvider = ({ children }) => {
+const socketContext = createContext(null)
 
-    const socket = useMemo(() => io({
-        host: 'localhost',
-        port: 5001
-    }), [])
+// eslint-disable-next-line react-refresh/only-export-components
+export const useSocket = () => {
+    const socket = useContext(socketContext)
+        return socket
+  };
+
+export const SocketContextProvider = ({ children }) => {
+
+    const socket = useMemo(
+        () => io("http://localhost:5001")
+        , []);
 
     return (
         <socketContext.Provider value={socket}>
             {children}
         </socketContext.Provider>
     )
-}
-
-export default socketContextProvider;
-
-export const useSocket = () =>{
-    return useContext()
 }
 
 

@@ -1,13 +1,19 @@
-import React from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import logo from "../assets/logo.svg"
 import { videoSchema } from "../models/index"
 import { useFormik } from 'formik'
 import { toast, ToastContainer } from 'react-toastify'
-
+import {useSocket} from "../providers/SocketContextProvider"
 
 
 function Video() {
+
+    const socket = useSocket()
+
+    // console.log(socket)
+    // socket.emit('join-video',{username:"helo",videoId:"abcdheub234bv"})
+
 
   const navigate = useNavigate();
 
@@ -21,6 +27,7 @@ function Video() {
     validationSchema: videoSchema,
     onSubmit: (values, action) => {
       console.log(values)
+      socket.emit('join-video',{username:values.username,videoId:values.videoId})
       action.resetForm()
     }
   })
@@ -49,6 +56,18 @@ function Video() {
 
   }
 
+  const handleJoinRoom = useCallback((data)=>{
+    const {username , videoId} = data
+    navigate(`/video/${videoId}`)
+  },[navigate])
+
+  useEffect(()=>{
+    socket.on('join-video',handleJoinRoom)
+    return ()=>{
+      socket.off('join-video',handleJoinRoom)
+    }
+  },[socket,handleJoinRoom])
+
   return (
     <>
       <div style={{ backgroundColor: '#131234' }} className='h-screen w-screen flex flex-col justify-center gap-1 items-center '>
@@ -62,7 +81,7 @@ function Video() {
           <input className='bg-transparent p-2 border-2 rounded-md border-blue-400 text-white w-full text-base focus:border-purple-400 focus:outline-none' name='username' type="text" placeholder='username' value={values.username} onBlur={handleBlur} onChange={handleChange} min={3} />
 
 
-          <input className='bg-transparent p-2 border-2 rounded-md border-blue-400 text-white w-full text-base focus:border-purple-400 focus:outline-none' name='password' type="password" placeholder='Enter videoId' onBlur={handleBlur} value={values.password} onChange={handleChange} />
+          <input className='bg-transparent p-2 border-2 rounded-md border-blue-400 text-white w-full text-base focus:border-purple-400 focus:outline-none' name='videoId' type="text" placeholder='Enter videoId' onBlur={handleBlur} value={values.videoId} onChange={handleChange} />
 
           <div className="button-container">
             <div className="dog">

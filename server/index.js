@@ -29,8 +29,7 @@ connectDB()
     })
 
 // IO starts here
-
-const io = socket(server, {
+const io = new Server(server, {
     cors: {
         origin: "http://localhost:5173",
         credentials: true,
@@ -40,14 +39,17 @@ const io = socket(server, {
 global.onlineUsers = new Map(); //kis room me kaun baitha hai .
 
 io.on("connection", (socket) => {
+    console.log("Socket cnnected of chats" + socket.id)
     global.chatSocket = socket;
     socket.on("add-user", (userId) => {
         onlineUsers.set(userId, socket.id);
     });
 
     socket.on("send-msg", (data) => {
+        // console.log("new connection")
         const sendUserSocket = onlineUsers.get(data.to);
         if (sendUserSocket) {
+            // console.log("new connection")
             socket.to(sendUserSocket).emit("msg-recieve", data.message);
         }
     });
@@ -56,16 +58,19 @@ io.on("connection", (socket) => {
 //Video Callng chat application code here.
 
 const userToSocketMapping = new Map();
+const socketToUserMapping = new Map();
 
 io.on("connection",(socket)=>{
+    console.log("Socket cnnected of videochat" + socket.id)
     socket.on("join-video",(data) => {
         console.log("new connection")
+        console.log(data)
         const {username,videoId} = data;
         console.log("user", username, "joined" , videoId);
         const socketId = socket.id;
         userToSocketMapping.set(username,socketId);
-        socket.join(videoId);
-        socket.broadcast.to(videoId).emit("user-joined",{username});
+        socketToUserMapping.set(socketId,username);
+        io.to(socketId).emit("join-video",data)
     });
 });
 
