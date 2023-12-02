@@ -70,6 +70,8 @@ io.on("connection",(socket)=>{
         const socketId = socket.id;
         userToSocketMapping.set(username,socketId);
         socketToUserMapping.set(socketId,username);
+        io.to(videoId).emit("user-joined",{username,id:socketId});
+        socket.join(videoId);
         io.to(socketId).emit("join-video",data)
     });
 });
