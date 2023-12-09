@@ -22,13 +22,13 @@ function Room() {
     socket.emit("user-call", { to: remoteSocketId, offer })
     setMyStream(stream)
 
-  })
+  },[remoteSocketId, socket])
 
   const handleIncomingCall = useCallback(async ({ from, offer }) => {
     setRemoteSocketId(from)
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true })
     setMyStream(stream)
-    console.log(`incoming call from ${from, offer}`)
+    console.log('incoming call',from, offer)
     const ans = await peer.getAnswer(offer)
     socket.emit("call-accepted", { to: from, ans })
   }, [socket])
@@ -37,7 +37,7 @@ function Room() {
     for (const track of myStream.getTracks()) {
       peer.peer.addTrack(track, myStream)
     }
-  }, [myStream])
+  },[myStream])
 
 
   const handleCallAccepted = useCallback(async ({ ans }) => {
@@ -47,11 +47,12 @@ function Room() {
 
   }, [sendStreams])
 
-  const handleNegoNeedIncoming = useCallback(async (from, offer) => {
+  const handleNegoNeedIncoming = useCallback(async ({from, offer}) => {
     const ans = await peer.getAnswer(offer)
     socket.emit('negotiation-done', { to: from, ans })
   }, [socket])
-  const handleNegoFinal = useCallback(async (ans) => {
+  
+  const handleNegoFinal = useCallback(async ({ans}) => {
     await peer.setLocalDescription(ans)
   }, [])
 
@@ -78,7 +79,7 @@ function Room() {
 
   const handleNegoNeeded = useCallback(async () => {
     const offer = await peer.getOffer()
-    socket.emit("peer-neg-needed", { to: remoteSocketId, offer })
+    socket.emit("peer-neg-needed", { offer , to: remoteSocketId})
   }, [remoteSocketId, socket])
 
   useEffect(() => {
@@ -86,21 +87,21 @@ function Room() {
     return () => {
       peer.peer.removeEventListener('negotiationneeded', handleNegoNeeded)
     }
-  })
+  },[handleNegoNeeded])
 
   useEffect(() => {
-    peer.peer.addEventListener('track', async (e) => {
-      console.log("got track")
-      const remoteStream = e.streams;
+    peer.peer.addEventListener("track", async (ev) => {
+      console.log("GOT TRACKS!!");
+      const remoteStream = ev.streams;
       console.log(remoteStream)
-      setRemoteStream(remoteStream[0])
-    })
-  })
+      setRemoteStream(remoteStream[0]);
+    });
+  }, []);
 
   return (
     <div>
       <div style={{ backgroundColor: '#131324' }} className='h-screen w-screen flex justify-center items-center flex-col gap-4 '>
-        <div style={{ backgroundColor: '#00000076', height: '85vh', width: '85vw', display: 'grid', gridTemplateColumns: '25% 75%' }} >
+        <div style={{ backgroundColor: '#00000076', height: '85vh', width: '85vw'}} >
           <h1>Room page</h1>
           <p>{
             remoteSocketId ? "connected" : "No one else in the video."

@@ -19,9 +19,8 @@ function Video() {
 
   const initialValues = {
     username: '',
-    videoId: '',
-    password: '',
-  }
+    videoId: ''
+}
 
   const { errors, values, handleBlur, touched, handleChange, handleSubmit } = useFormik({
     initialValues,
@@ -55,22 +54,12 @@ function Video() {
       })
     ) : null
 
-    errors.password && touched.password ? (
-      toast.error(errors.password, {
-        position: 'bottom-right',
-        autoClose: 3000,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'dark'
-      })
-    ) : null
-
   }
 
   const handleJoinRoom = useCallback((data)=>{
-    const {username , videoId,password} = data
+    const {username , videoId} = data
     //if user is logged in then navigate.
-    if(username && videoId && password){
+    if(username && videoId){
       navigate(`/video/${videoId}`)
     }
   },[navigate])
@@ -97,7 +86,6 @@ function Video() {
 
           <input className='bg-transparent p-2 border-2 rounded-md border-blue-400 text-white w-full text-base focus:border-purple-400 focus:outline-none' name='videoId' type="text" placeholder='Enter videoId' onBlur={handleBlur} value={values.videoId} onChange={handleChange} />
 
-          <input className='bg-transparent p-2 border-2 rounded-md border-blue-400 text-white w-full text-base focus:border-purple-400 focus:outline-none' name='password' type="password" placeholder='Enter password' onBlur={handleBlur} value={values.password} onChange={handleChange} />
 
           <div className="button-container">
             <div className="dog">

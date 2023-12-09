@@ -85,7 +85,7 @@ io.on("connection",(socket)=>{
     socket.on('peer-nego-needed',({to,offer})=>{
         io.to(to).emit('peer-nego-needed',{from:socket.id,offer})
     })
-    socket.on('negotiation-done',({to,offer})=>{
+    socket.on('negotiation-done',({to,ans})=>{
         io.to(to).emit('peer-nego-final',{from:socket.id,ans})
     })
 

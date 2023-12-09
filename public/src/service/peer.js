@@ -2,9 +2,6 @@ class PeerService {
     constructor(){
         if(!this.peer){
             this.peer = new RTCPeerConnection({
-                initiator: true,
-                trickle: false,
-                config: {
                     iceServers: [
                         {
                             urls:[
@@ -13,7 +10,6 @@ class PeerService {
                             ],
                         },
                     ]
-                }
             });
         }
     }

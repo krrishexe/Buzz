@@ -15,5 +15,4 @@ export const loginSchema = Yup.object({
 export const videoSchema = Yup.object({
     username:Yup.string().required("Please enter a valid username"),
     videoId:Yup.string().required("Please enter the unique Video ID"),
-    password:Yup.string().required("Please enter the password")
 })
