@@ -16,7 +16,7 @@ app.use("/api/auth", userRoutes)
 // auth vale sare routes userRoutes me hai
 app.use("/api/messages", messageRoutes)
 
-const server = app.listen(process.env.PORT, () => {
+const server = app.listen(process.env.PORT || 5000, () => {
     console.log(`Server live on port ${process.env.PORT}`)
 })
 
