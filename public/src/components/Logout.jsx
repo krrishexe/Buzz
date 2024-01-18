@@ -10,7 +10,7 @@ function Logout() {
         navigate('/login')
     }
   return (
-    <button onClick={handleClick} className='flex justify-center items-center p-2 rounded-lg bg-violet-400 border-none cursor-pointer text-xl'>
+    <button onClick={handleClick} className='flex justify-center items-center ml-3 p-2 rounded-lg bg-violet-400 border-none cursor-pointer text-xl'>
       <BiPowerOff className='text-white' />
     </button>
   )

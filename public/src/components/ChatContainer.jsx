@@ -4,6 +4,7 @@ import ChatInput from './ChatInput'
 import Messages from './Messages'
 import axios from 'axios'
 import { getAllMessagesRoute, sendMessageRoute } from '../utils/APIRoutes'
+import Videocall from './Videocall'
 
 
 function ChatContainer({ currentChat, currentUser,socket }) {
@@ -71,7 +72,10 @@ function ChatContainer({ currentChat, currentUser,socket }) {
                         <h3 className='text-white'>{currentChat.username}</h3>
                     </div>
                 </div>
+                <div className='flex '>
+                <Videocall />
                 <Logout />
+                </div>
             </div>
             <div className='pt-4 pb-4 pl-8 pr-8 flex flex-col gap-4 overflow-auto'>
                 {

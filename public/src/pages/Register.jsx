@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.svg'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
 import { useFormik } from 'formik'

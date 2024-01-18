@@ -11,9 +11,6 @@ function Video() {
 
     const socket = useSocket()
 
-    // console.log(socket)
-    // socket.emit('join-video',{username:"helo",videoId:"abcdheub234bv"})
-
 
   const navigate = useNavigate();
 
