@@ -17,7 +17,7 @@ app.use("/api/auth", userRoutes)
 app.use("/api/messages", messageRoutes)
 
 app.get('/',(req,res)=>{
-    res.send('Hello World after gh action deployment')
+    res.send('Hello World after gh action')
 })
 
 const server = app.listen(process.env.PORT || 5000, () => {
