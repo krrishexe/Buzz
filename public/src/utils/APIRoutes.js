@@ -1,4 +1,6 @@
 export const host = "https://buzz-h11g.onrender.com";
+// export const host = "http://localhost:5173";
+
 
 export const registerRoute = `${host}/api/auth/register`;
 

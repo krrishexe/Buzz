@@ -5,7 +5,7 @@ const app = express()
 const userRoutes = require('./routes/userRoutes')
 const messageRoutes = require('./routes/messagesRoute')
 const { connectDB } = require('./db')
-const {Server} = require('socket.io')
+const { Server } = require('socket.io')
 const socket = require('socket.io')
 require('dotenv').config()
 
@@ -15,6 +15,10 @@ app.use(express.json())
 app.use("/api/auth", userRoutes)
 // auth vale sare routes userRoutes me hai
 app.use("/api/messages", messageRoutes)
+
+app.get('/',(req,res)=>{
+    res.send('Hello World')
+})
 
 const server = app.listen(process.env.PORT || 5000, () => {
     console.log(`Server live on port ${process.env.PORT}`)
@@ -42,12 +46,12 @@ io.on("connection", (socket) => {
     console.log("Socket cnnected of chats" + socket.id)
     global.chatSocket = socket;
     socket.on("add-user", (userId) => {
-        onlineUsers.set(userId, socket.id);
+        onlineUsers.set(userId, socket.id);     //online users ki list me add kardo.
     });
 
     socket.on("send-msg", (data) => {
         // console.log("new connection")
-        const sendUserSocket = onlineUsers.get(data.to);
+        const sendUserSocket = onlineUsers.get(data.to); //kisko bhejna hai
         if (sendUserSocket) {
             // console.log("new connection")
             socket.to(sendUserSocket).emit("msg-recieve", data.message);
@@ -60,33 +64,33 @@ io.on("connection", (socket) => {
 const userToSocketMapping = new Map();
 const socketToUserMapping = new Map();
 
-io.on("connection",(socket)=>{
+io.on("connection", (socket) => {
     console.log("Socket cnnected of videochat" + socket.id)
-    socket.on("join-video",(data) => {
+    socket.on("join-video", (data) => {
         console.log("new connection")
         console.log(data)
-        const {username,videoId} = data;
-        console.log("user", username, "joined" , videoId);
+        const { username, videoId } = data;
+        console.log("user", username, "joined", videoId);
         const socketId = socket.id;
-        userToSocketMapping.set(username,socketId);
-        socketToUserMapping.set(socketId,username);
-        io.to(videoId).emit("user-joined",{username,id:socketId});
+        userToSocketMapping.set(username, socketId);
+        socketToUserMapping.set(socketId, username);
+        io.to(videoId).emit("user-joined", { username, id: socketId });
         socket.join(videoId);
-        io.to(socketId).emit("join-video",data)
+        io.to(socketId).emit("join-video", data)
     });
 
-    socket.on('user-call',({to,offer})=>{
-        io.to(to).emit('incoming-user-call',{from:socket.id,offer})
+    socket.on('user-call', ({ to, offer }) => {
+        io.to(to).emit('incoming-user-call', { from: socket.id, offer })
     })
 
-    socket.on('call-accepted',({to,ans})=>{
-        io.to(to).emit('call-accepted',{from:socket.id,ans})
+    socket.on('call-accepted', ({ to, ans }) => {
+        io.to(to).emit('call-accepted', { from: socket.id, ans })
     })
-    socket.on('peer-nego-needed',({to,offer})=>{
-        io.to(to).emit('peer-nego-needed',{from:socket.id,offer})
+    socket.on('peer-nego-needed', ({ to, offer }) => {
+        io.to(to).emit('peer-nego-needed', { from: socket.id, offer })
     })
-    socket.on('negotiation-done',({to,ans})=>{
-        io.to(to).emit('peer-nego-final',{from:socket.id,ans})
+    socket.on('negotiation-done', ({ to, ans }) => {
+        io.to(to).emit('peer-nego-final', { from: socket.id, ans })
     })
 
 
